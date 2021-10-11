@@ -1,14 +1,5 @@
 use std::{env, fmt, fs, io, path::Path, time::Instant};
-
-mod direction;
-mod puzzle;
-mod solve;
-mod vec2;
-
-pub use direction::*;
-pub use puzzle::*;
-pub use solve::solve;
-pub use vec2::*;
+use anima_solver::*;
 
 struct DisplayState<'a>(&'a State, &'a Data);
 
