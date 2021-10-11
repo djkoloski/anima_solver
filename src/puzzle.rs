@@ -130,6 +130,7 @@ impl State {
             }
         }
 
+        result.actors.sort();
         result
     }
 
