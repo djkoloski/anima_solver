@@ -154,6 +154,21 @@ impl State {
         result
     }
 
+    pub fn heuristic(&self, data: &Data) -> usize {
+        let mut max_distance = 0;
+
+        for goal in data.goals.iter() {
+            let mut min_distance = usize::MAX;
+            for actor in self.actors.iter().filter(|a| a.color == goal.color) {
+                let d = (goal.position - actor.position).abs();
+                min_distance = usize::min(min_distance, (d.x + d.y) as usize);
+            }
+            max_distance = usize::max(max_distance, min_distance);
+        }
+
+        max_distance
+    }
+
     pub fn parse(s: &str) -> Result<(State, Data), ParseError> {
         let size_x = s.lines().next().ok_or(ParseError::NoRows)?.len();
         let size_y = s
