@@ -1,5 +1,6 @@
 use core::{fmt, num::ParseIntError};
 use crate::{Direction, Vec2};
+use arrayvec::ArrayVec;
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum Color {
@@ -61,7 +62,7 @@ pub enum Transition<T> {
 
 #[derive(Debug, Clone, Eq, Hash, PartialEq)]
 pub struct State {
-    actors: Vec<Actor>,
+    actors: ArrayVec<Actor, 8>,
 }
 
 #[derive(Debug)]
@@ -134,8 +135,8 @@ impl State {
         result
     }
 
-    pub fn transitions(&self, data: &Data) -> Vec<(Direction, Transition<Self>)> {
-        let mut result = Vec::new();
+    pub fn transitions(&self, data: &Data) -> [(Direction, Transition<Self>); 4] {
+        let mut result = ArrayVec::new();
         for direction in [
             Direction::Right,
             Direction::Up,
@@ -151,7 +152,8 @@ impl State {
                 result.push((*direction, Transition::Indeterminate(state)));
             }
         }
-        result
+        // SAFETY: All of the elements of result are initialized
+        unsafe { result.into_inner_unchecked() }
     }
 
     pub fn heuristic(&self, data: &Data) -> usize {
@@ -180,7 +182,7 @@ impl State {
 
         let mut tiles = vec![Tile::Impassable; size_x * size_y as usize];
         let mut goals = Vec::new();
-        let mut actors = Vec::new();
+        let mut actors = ArrayVec::new();
 
         let mut lines = s.lines().enumerate();
         for y in (0..size_y).rev() {

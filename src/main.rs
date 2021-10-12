@@ -92,9 +92,8 @@ fn solve_file(path: &Path, settings: &Settings) -> Result<(), SolveError<ParseEr
                 for action in solution {
                     println!("{}", DisplayState(&state, &data));
                     println!("{}", action);
-                    if let Transition::Indeterminate(s) = state
-                        .transitions(&data)
-                        .into_iter()
+                    if let Transition::Indeterminate(s) =
+                        IntoIterator::into_iter(state.transitions(&data))
                         .find(|(a, _)| a == &action)
                         .unwrap()
                         .1
