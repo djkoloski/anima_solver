@@ -1,6 +1,6 @@
-use core::{fmt, num::ParseIntError};
 use crate::{Direction, Vec2};
 use arrayvec::ArrayVec;
+use core::{fmt, num::ParseIntError};
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum Color {

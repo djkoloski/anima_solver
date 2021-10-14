@@ -1,6 +1,10 @@
 use crate::{Data, Direction, State, Transition};
-use std::{cmp::Ordering, collections::{hash_map::Entry, BinaryHeap, HashMap}, hash::BuildHasher};
 use rustc_hash::FxHasher;
+use std::{
+    cmp::Ordering,
+    collections::{hash_map::Entry, BinaryHeap, HashMap},
+    hash::BuildHasher,
+};
 
 #[derive(Eq, PartialEq)]
 struct Node {
