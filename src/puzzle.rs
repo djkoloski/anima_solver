@@ -26,6 +26,7 @@ pub struct Data {
 }
 
 impl Data {
+    #[inline]
     fn tile(&self, position: Vec2) -> Tile {
         if position.x < 0
             || position.x >= self.size.x
@@ -38,6 +39,7 @@ impl Data {
         }
     }
 
+    #[inline]
     fn is_solved_by(&self, state: &State) -> bool {
         self.goals.iter().all(|g| {
             state
@@ -103,6 +105,7 @@ pub enum ParseError {
 }
 
 impl State {
+    #[inline]
     pub fn transition(&self, data: &Data, direction: &Direction) -> State {
         let mut result = self.clone();
 

@@ -1,5 +1,5 @@
 use crate::{Data, Direction, State, Transition};
-use std::{cmp::Ordering, collections::{BinaryHeap, HashSet}};
+use std::{cmp::Ordering, collections::{hash_map::Entry, BinaryHeap, HashMap}};
 
 #[derive(Eq, PartialEq)]
 struct Node {
@@ -22,12 +22,16 @@ impl Ord for Node {
 }
 
 pub fn solve(initial_state: State, data: &Data) -> Option<Vec<Direction>> {
-    let mut states = HashSet::new();
-    let mut parents = Vec::new();
-    let mut queue = BinaryHeap::new();
+    let mut states = HashMap::with_capacity(4 * 1024);
+    let mut parents = Vec::with_capacity(4 * 1024);
+    let mut queue = BinaryHeap::with_capacity(1024);
+
+    // Insert initial state
+    let initial_transitions = initial_state.transitions(data);
+    states.insert(initial_state, ());
 
     // Add transitions from initial state
-    for (action, transition) in initial_state.transitions(data) {
+    for (action, transition) in initial_transitions {
         match transition {
             Transition::Indeterminate(state) => {
                 parents.push((0, action));
@@ -46,8 +50,8 @@ pub fn solve(initial_state: State, data: &Data) -> Option<Vec<Direction>> {
 
     // Pop states in order
     while let Some(parent_node) = queue.pop() {
-        if !states.contains(&parent_node.state) {
-            for (action, transition) in parent_node.state.transitions(data) {
+        if let Entry::Vacant(entry) = states.entry(parent_node.state) {
+            for (action, transition) in entry.key().transitions(data) {
                 match transition {
                     Transition::Indeterminate(state) => {
                         parents.push((parent_node.index, action));
@@ -74,7 +78,7 @@ pub fn solve(initial_state: State, data: &Data) -> Option<Vec<Direction>> {
                     }
                 }
             }
-            states.insert(parent_node.state);
+            entry.insert(());
         }
     }
 

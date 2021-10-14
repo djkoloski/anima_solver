@@ -10,6 +10,7 @@ pub enum Direction {
 }
 
 impl Direction {
+    #[inline]
     pub fn rotate_ccw(self) -> Direction {
         match self {
             Direction::Right => Direction::Up,
@@ -19,6 +20,7 @@ impl Direction {
         }
     }
 
+    #[inline]
     pub fn rotate_cw(self) -> Direction {
         match self {
             Direction::Right => Direction::Down,
@@ -28,6 +30,7 @@ impl Direction {
         }
     }
 
+    #[inline]
     pub fn reverse(self) -> Direction {
         match self {
             Direction::Right => Direction::Left,
@@ -37,6 +40,7 @@ impl Direction {
         }
     }
 
+    #[inline]
     pub fn to_vec2(self) -> Vec2 {
         match self {
             Direction::Right => Vec2::right(),
