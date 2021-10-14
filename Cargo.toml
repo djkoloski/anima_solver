@@ -10,6 +10,7 @@ criterion = "0.3"
 
 [dependencies]
 arrayvec = "0.7"
+rustc-hash = "1.1"
 
 [[bench]]
 name = "bench"
