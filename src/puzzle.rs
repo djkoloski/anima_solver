@@ -106,7 +106,7 @@ pub enum ParseError {
 
 impl State {
     #[inline]
-    pub fn transition(&self, data: &Data, direction: &Direction) -> State {
+    pub fn transition(&self, data: &Data, direction: Direction) -> State {
         let mut result = self.clone();
 
         for actor in result.actors.iter_mut() {
@@ -139,24 +139,20 @@ impl State {
     }
 
     pub fn transitions(&self, data: &Data) -> [(Direction, Transition<Self>); 4] {
-        let mut result = ArrayVec::new();
-        for direction in [
+        [
             Direction::Right,
             Direction::Up,
             Direction::Left,
             Direction::Down,
         ]
-        .iter()
-        {
+        .map(|direction| {
             let state = self.transition(data, direction);
             if data.is_solved_by(&state) {
-                result.push((*direction, Transition::Success));
+                (direction, Transition::Success)
             } else {
-                result.push((*direction, Transition::Indeterminate(state)));
+                (direction, Transition::Indeterminate(state))
             }
-        }
-        // SAFETY: All of the elements of result are initialized
-        unsafe { result.into_inner_unchecked() }
+        })
     }
 
     pub fn heuristic(&self, data: &Data) -> usize {
