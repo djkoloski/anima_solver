@@ -1,5 +1,10 @@
 use crate::{Data, Direction, State, Transition};
-use std::{cmp::Ordering, collections::{hash_map::Entry, BinaryHeap, HashMap}};
+use rustc_hash::FxHasher;
+use std::{
+    cmp::Ordering,
+    collections::{hash_map::Entry, BinaryHeap, HashMap},
+    hash::BuildHasher,
+};
 
 #[derive(Eq, PartialEq)]
 struct Node {
@@ -21,8 +26,18 @@ impl Ord for Node {
     }
 }
 
+struct FastHashBuilder;
+
+impl BuildHasher for FastHashBuilder {
+    type Hasher = FxHasher;
+
+    fn build_hasher(&self) -> Self::Hasher {
+        FxHasher::default()
+    }
+}
+
 pub fn solve(initial_state: State, data: &Data) -> Option<Vec<Direction>> {
-    let mut states = HashMap::with_capacity(4 * 1024);
+    let mut states = HashMap::with_capacity_and_hasher(4 * 1024, FastHashBuilder);
     let mut parents = Vec::with_capacity(4 * 1024);
     let mut queue = BinaryHeap::with_capacity(1024);
 

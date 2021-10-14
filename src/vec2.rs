@@ -39,7 +39,10 @@ impl Vec2 {
 
     #[inline]
     pub fn abs(self) -> Vec2 {
-        Vec2 { x: self.x.abs(), y: self.y.abs() }
+        Vec2 {
+            x: self.x.abs(),
+            y: self.y.abs(),
+        }
     }
 }
 

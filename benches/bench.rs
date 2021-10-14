@@ -2,8 +2,7 @@ use anima_solver::{solve, State};
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn solve_free_radical(c: &mut Criterion) {
-    const SQUARE_DANCE: &str =
-        " ....\n.r.r.\n.. ..\n.r.r.\n.... \n\nR 2 1\nR 1 2\nR 3 2\nR 2 3";
+    const SQUARE_DANCE: &str = " ....\n.r.r.\n.. ..\n.r.r.\n.... \n\nR 2 1\nR 1 2\nR 3 2\nR 2 3";
 
     let (initial_state, data) = State::parse(SQUARE_DANCE).unwrap();
 

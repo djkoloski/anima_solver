@@ -1,5 +1,5 @@
-use std::{env, fmt, fs, io, path::Path, time::Instant};
 use anima_solver::*;
+use std::{env, fmt, fs, io, path::Path, time::Instant};
 
 struct DisplayState<'a>(&'a State, &'a Data);
 
@@ -94,9 +94,9 @@ fn solve_file(path: &Path, settings: &Settings) -> Result<(), SolveError<ParseEr
                     println!("{}", action);
                     if let Transition::Indeterminate(s) =
                         IntoIterator::into_iter(state.transitions(&data))
-                        .find(|(a, _)| a == &action)
-                        .unwrap()
-                        .1
+                            .find(|(a, _)| a == &action)
+                            .unwrap()
+                            .1
                     {
                         state = s;
                     }
